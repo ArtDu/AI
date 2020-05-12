@@ -5,7 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from model import LogisticRegressionUsingGD
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-
+import warnings
+warnings.filterwarnings('ignore')
 
 def load_data(path):
     marks_df = pd.read_csv(path)
@@ -34,13 +35,19 @@ if __name__ == "__main__":
     # Logistic Regression from scratch using Gradient Descent
     model = LogisticRegressionUsingGD()
     model.fit(X_train, y_train, theta)
-    predicted_classes = model.predict(X_test)
-    accuracy = model.accuracy(predicted_classes, y_test.flatten())
     parameters = model.w_
-    print("The accuracy of the model is {}".format(accuracy))
-    print("The model parameters using Gradient descent")
-    print("\n")
-    print(parameters)
+
+    predicted_classes = model.predict(X_train)
+    train_accuracy = model.accuracy(predicted_classes, y_train.flatten())
+
+    predicted_classes = model.predict(X_test)
+    test_accuracy = model.accuracy(predicted_classes, y_test.flatten())
+
+    print("My log reg:")
+    print("Train accuracy {}".format(train_accuracy))
+    print("Test accuracy {}".format(test_accuracy))
+
+    # print(parameters)
 
     # plotting the decision boundary
     # As there are two features
@@ -51,8 +58,15 @@ if __name__ == "__main__":
     model = LogisticRegression()
     model.fit(X_train, y_train)
     parameters = model.coef_
+
+    predicted_classes = model.predict(X_train)
+    train_accuracy = accuracy_score(predicted_classes, y_train.flatten())
+
     predicted_classes = model.predict(X_test)
-    accuracy = accuracy_score(predicted_classes, y_test.flatten())
-    print('The accuracy score using scikit-learn is {}'.format(accuracy))
-    print("The model parameters using scikit learn")
-    print(parameters)
+    test_accuracy = accuracy_score(predicted_classes, y_test.flatten())
+
+    print("Scikit-learn:")
+    print("Train accuracy {}".format(train_accuracy))
+    print("Test accuracy {}".format(test_accuracy))
+
+    # print(parameters)
